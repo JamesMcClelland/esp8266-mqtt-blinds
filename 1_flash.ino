@@ -5,10 +5,9 @@ struct SavedObject {
     char ssid[32];
     char pass[64];
     int speed;
-    int stepsInRange;
-    int currentPosition;
-    int lowerLimit;
-    int upperLimit;
+    long currentPosition;
+    long lowerLimit;
+    long upperLimit;
     char clientId[64];
     char server[64];
     char username[64];
@@ -24,7 +23,6 @@ void EEPROMBlank() {
             "", /*ssid*/
             "", /*pass*/
             0, /*speed*/
-            0, /*stepsInRange*/
             0,/*currentPosition*/
             0,/*lowerLimit*/
             0,/*upperLimit*/
@@ -50,7 +48,6 @@ void setupEEPROM() {
     Serial.println( loadedData.ssid );
     Serial.println( loadedData.pass );
     Serial.println( loadedData.speed );
-    Serial.println( loadedData.stepsInRange );
     Serial.println( loadedData.currentPosition );
     Serial.println( loadedData.lowerLimit );
     Serial.println( loadedData.upperLimit );
@@ -61,24 +58,22 @@ void setupEEPROM() {
     
 }
 
-void saveSetting(String setting, int value, String stringValue) {
+void saveSetting(String setting, String stringValue) {
     /*Todo: there must be a way of getting a property of a struct by its key e.g loadedData[setting]*/
     if (setting == "initialised") {
-        loadedData.initialised = value;
+        loadedData.initialised = stringValue.toInt();
     } else if(setting == "upperLimit") {
-        loadedData.upperLimit = value;
+        loadedData.upperLimit = stringValue.toInt();
+    } else if(setting == "lowerLimit") {
+        loadedData.lowerLimit = stringValue.toInt();
     } else if(setting == "ssid") {
       stringValue.toCharArray(loadedData.ssid, 32);
     } else if(setting ==  "pass") {
       stringValue.toCharArray(loadedData.pass, 64);
     } else if(setting ==  "speed") {
-        loadedData.speed = value;
-    } else if(setting ==  "stepsInRange") {
-        loadedData.stepsInRange = value;
+        loadedData.speed = stringValue.toInt();
     } else if(setting ==  "currentPosition") {
-        loadedData.currentPosition = value;
-    } else if(setting == "lowerLimit") {
-        loadedData.lowerLimit = value;
+        loadedData.currentPosition = stringValue.toInt();
     } else if(setting ==  "clientId") {
         stringValue.toCharArray(loadedData.clientId, 64);
     } else if(setting ==  "server") {

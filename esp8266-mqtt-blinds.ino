@@ -53,24 +53,18 @@ void setup() {
 
 void loop() {
     //Todo: add in MQTT topic publish and subsribe;
-//    server.handleClient();
-stepper.move(1000);
-while (stepper.distanceToGo() != 0){
-  stepper.runToPosition();
-}
+    server.handleClient();
 
-delay(2000);
-stepper.move(-1000);
-while (stepper.distanceToGo() != 0){
-  stepper.runToPosition();
-}
-delay(2000);
+//Serial.println("1");
 //    stepByTurnAmount(1);
 //    delay(2000);
+//    Serial.println("2");
 //    stepByTurnAmount(-1);
 //    delay(2000);
+//    Serial.println("3");
 //    stepByTurnAmount(1);
 //    delay(2000);
+//    Serial.println("4");
 //    stepByTurnAmount(-1);
 //    delay(2000);
 }
