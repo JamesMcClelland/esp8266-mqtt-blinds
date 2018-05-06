@@ -14,6 +14,7 @@ struct SavedObject {
     char password[64];
 };
 
+//Todo: add in default variavles that can be changed if they are already known when flashing the memory
 SavedObject loadedData; //Variable to store custom object read from EEPROM.
 
 
