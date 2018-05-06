@@ -41,9 +41,10 @@ void setup() {
     Serial.print("AP IP address: ");
     Serial.println(myIP);
 
+    setupEEPROM();
     setupRoutes();
     setupStepper();
-    setupEEPROM();
+
 
     //Todo: add in connecting to existing wifi point if present in EEPROM.
 

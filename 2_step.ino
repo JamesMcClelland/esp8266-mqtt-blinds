@@ -4,9 +4,9 @@
 int stepsPerRotation = 4076;
 
 void setupStepper() {
-  stepper.moveTo(1000);
-  stepper.setMaxSpeed(1000);
-  stepper.setAcceleration(500);
+    stepper.setCurrentPosition(loadedData.currentPosition);
+    stepper.setMaxSpeed(1000);
+    stepper.setAcceleration(500);
 }
 
 void stepTo(long newLocation){
