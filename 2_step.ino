@@ -6,14 +6,16 @@ int stepsPerRotation = 4076;
 void setupStepper() {
     stepper.setCurrentPosition(loadedData.currentPosition);
     stepper.setMaxSpeed(1000);
-    stepper.setAcceleration(500);
+    stepper.setSpeed(1000);
+//    stepper.setAcceleration(500);
 }
 
 void stepTo(long newLocation){
     stepper.moveTo(newLocation);
+    stepper.setSpeed(1000);
     while (stepper.distanceToGo() != 0)
     {
-        stepper.run();
+        stepper.runSpeedToPosition();
         yield();
     }
     saveSetting("currentPosition", String(newLocation));
