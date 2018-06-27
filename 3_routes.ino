@@ -44,24 +44,24 @@ void handleRoot() {
                         "</div>"
                         "<script type='text/javascript'>"
                         "function makeRequest(url, params) {"
-                        "alert('Startin Request');"
+                        "console.log('Startin Request');"
                         "url = '/' + url;"
                          "var http = new XMLHttpRequest();"
                          "var encodedParams = '';"
                          "for (var key in params) {"
                          "encodedParams += key+'='+ params[key]+'&';"
                          "};"
-                         "alert('Posting to: ' + url + ' with params: ' +encodedParams );"
+                         "console.log('Posting to: ' + url + ' with params: ' +encodedParams );"
                          "encodedParams = encodedParams.slice(0, -1);"
                          "http.open('POST', url, true);"
                          "http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');"
                          "http.onreadystatechange = function() {/*Call a function when the state changes.*/"
                          "if(http.readyState == 4 && http.status == 200) {"
-                         "alert(http.responseText);"
+                         "console.log(http.responseText);"
                          "};"
                          "};"
                          "http.send(encodedParams);"
-                         "alert(http.responseText);"
+                         "console.log(http.responseText);"
                          "};"
                          "function turn(amount) {"
                          "makeRequest('turn', {'amount' : amount});"
@@ -242,11 +242,7 @@ void goTo() {
     //Todo: add to save feature.
     for (uint8_t i=0; i<server.args(); i++) {
         if (server.argName(i) == "place") {
-            if (server.arg(i) == "100") {
-                stepToHundred();
-            } else {
-                stepToZero();
-            }
+            stepToPercentage(server.arg(i).toInt());
             break;
         }
     }
@@ -270,4 +266,3 @@ void setupRoutes(){
     server.on("/goto", goTo);
     server.on("/reset", softReset);
 }
-
