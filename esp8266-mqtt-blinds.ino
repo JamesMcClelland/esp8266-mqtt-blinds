@@ -6,6 +6,8 @@
 #include <ESP8266WebServer.h>
 #include <AccelStepper.h>
 #include <PubSubClient.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 #include "config.h"
 /*
@@ -24,8 +26,9 @@ const int   mqttPort = 1883;
 const char *mqttUsername = "";
 const char *mqttPassword = "";
 const char *mqttClientID = "ESP8266-Blinds-0pKi4y8";
-const char* mqttStateTopic = "home/blinds";
-const char* mqttSetopic = "home/blinds/set";
+const char* mqttStateTopic = "home/office/blinds";
+const char* mqttSetopic = "home/office/blinds/set";
+const char* mqttTempTopic = "home/office/temperature";
  */
 
 ESP8266WebServer server(80);
@@ -42,7 +45,14 @@ AccelStepper stepper(HALFSTEP, motorPin1, motorPin3, motorPin2, motorPin4);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+#define TEMP_SENSOR D2
+
+OneWire oneWire(TEMP_SENSOR);
+DallasTemperature DS18B20(&oneWire);
+
 int dataAddress = 0;
+
+char temperatureString[6];
 
 struct SavedObject {
     int initialised;
@@ -53,6 +63,9 @@ struct SavedObject {
 };
 
 SavedObject loadedData; //Variable to store custom object read from EEPROM.
+
+long previousMillis = 0;
+long interval = 60000;   
 
 void setup() {
 
@@ -73,11 +86,8 @@ void setup() {
     setupRoutes();
     setupStepper();
     setupWifi();
-//
-//
-//    //Todo: add in connecting to existing wifi point if present in EEPROM.
-//
     SPIFFS.begin();    
+    DS18B20.begin();
 
 }
 
@@ -88,20 +98,13 @@ void loop() {
         reconnect();
     }
     client.loop();
-
+    client.setCallback(callback);
     server.handleClient();
 
-//Serial.println("1");
-//    stepByTurnAmount(1);
-//    delay(2000);
-//    Serial.println("2");
-//    stepByTurnAmount(-1);
-//    delay(2000);
-//    Serial.println("3");
-//    stepByTurnAmount(1);
-//    delay(2000);
-//    Serial.println("4");
-//    stepByTurnAmount(-1);
-//    delay(2000);
+    unsigned long currentMillis = millis();
+    if(currentMillis - previousMillis > interval) {
+      previousMillis = currentMillis;
+      sendTemp();
+    }
+    
 }
-
