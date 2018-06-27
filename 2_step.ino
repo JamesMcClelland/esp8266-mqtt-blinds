@@ -20,6 +20,7 @@ void stepTo(long newLocation){
     }
     saveSetting("currentPosition", String(newLocation));
     loadedData.currentPosition = newLocation;
+    sendState();
 }
 
 void stepByTurnAmount(float amount) {
@@ -37,26 +38,25 @@ void stepToPercentage(int percentage) {
     float fractionPercent = (float)percentage / (float)100;
     long percentPosition = 0;
 
-    if (loadedData.lowerLimit > loadedData.upperLimit) {
-        percentPosition = fractionPercent * (loadedData.lowerLimit - loadedData.upperLimit);
+    int higher = (loadedData.lowerLimit > loadedData.upperLimit) ? loadedData.lowerLimit : loadedData.upperLimit;
+    int lower = (loadedData.lowerLimit > loadedData.upperLimit) ? loadedData.upperLimit : loadedData.lowerLimit;
+
+    if (percentage == 100) { 
+      percentPosition = loadedData.upperLimit;
+    } else if (percentage == 0) { 
+      percentPosition = loadedData.lowerLimit;
     } else {
-        percentPosition = fractionPercent * (loadedData.upperLimit - loadedData.lowerLimit);
+      percentPosition = lower + (fractionPercent * (higher - lower));
     }
 
-    Serial.println("Stepping to position:");
+    Serial.println("ZZZ");
+    Serial.println(higher);
+    Serial.println(lower);
+    Serial.println(fractionPercent);
     Serial.println(percentPosition);
-    Serial.println("Stepping to percentage:");
     Serial.println(percentage);
     
     stepTo(percentPosition);
-}
-
-void stepToZero() {
-    stepTo(loadedData.lowerLimit);
-}
-
-void stepToHundred() {
-    stepTo(loadedData.upperLimit);
 }
 
 int getPositionAsPercentage() {
