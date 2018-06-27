@@ -52,21 +52,35 @@ void callback(char* topic, byte* payload, unsigned int length) {
         message[i] = (char)payload[i];
     }
     Serial.println("CB2");
+    Serial.println(atoi(message));
     stepToPercentage(atoi(message));
     Serial.println("CB3");
     sendState();
-    Serial.println("CB4");
 }
 
 
 
 void sendState() {
-  Serial.println("CB5");
    char percentageString[3];
    int percentPosition = getPositionAsPercentage();
-   Serial.println("CB6");
    itoa(percentPosition, percentageString, 10);
-  Serial.println("CB7");
    client.publish(mqttStateTopic, percentageString, true);
+}
+
+float getTemperature() {
+  float temp;
+  do {
+    DS18B20.requestTemperatures(); 
+    temp = DS18B20.getTempCByIndex(0);
+    delay(100);
+  } while (temp == 85.0 || temp == (-127.0));
+  return temp;
+}
+
+
+void sendTemp() {
+   float temperature = getTemperature();
+   dtostrf(temperature, 2, 2, temperatureString);
+   client.publish(mqttTempTopic, temperatureString, true);
    Serial.println("CB8");
 }
