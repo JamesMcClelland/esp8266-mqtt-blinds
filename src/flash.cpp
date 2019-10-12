@@ -1,7 +1,15 @@
+#include <Arduino.h>
+#include <flash.h>
+#include <EEPROM.h>	
+
+int dataAddress = 0;
+
+SavedObject loadedData;
+
 void EEPROMBlank() {
     SavedObject cleanData = {
             1, /*initialised*/
-            0, /*speed*/
+            255, /*speed*/
             0,/*currentPosition*/
             0,/*lowerLimit*/
             0,/*upperLimit*/
@@ -46,4 +54,16 @@ void saveSetting(String setting, String stringValue) {
     EEPROM.commit();
 }
 
+long getPositionInfo(String type) {
+    if(type == "upperLimit") {
+        return loadedData.upperLimit;
+    } else if(type == "lowerLimit") {
+        return loadedData.lowerLimit;
+    } else if(type ==  "currentPosition") {
+        return loadedData.currentPosition;
+    }
+}
 
+int getSpeed() {
+    return loadedData.speed;
+}
