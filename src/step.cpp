@@ -89,6 +89,11 @@ void stepByNumber(long number) {
 }
 
 void stepToPercentage(int percentage) {
+    
+    //Refresh these values as the logic depends on them
+    lowerLimit = getPositionInfo("lowerLimit");
+    upperLimit = getPositionInfo("upperLimit");
+    
     //Gives us a value to multiply by
     float fractionPercent = (float)percentage / (float)100;
     long percentPosition = 0;
@@ -99,6 +104,11 @@ void stepToPercentage(int percentage) {
 
 //Todo: fix this function to properly return the current state
 int getPositionAsPercentage() {
+
+    //Refresh these values as the logic depends on them
+    lowerLimit = getPositionInfo("lowerLimit");
+    upperLimit = getPositionInfo("upperLimit");
+
     int positionP = 0;
 
     positionP = (int)abs( round( ( (float)(lowerLimit-currentPosition) / (float)(upperLimit - lowerLimit) ) * 100) );

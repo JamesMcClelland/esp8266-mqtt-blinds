@@ -1,89 +1,92 @@
-<h2>Blind Config</h2>
-<div class='pure-form pure-form-stacked'>
-    <fieldset>
-        <h3>MQTT</h3>
-        <label for='clientID'>Client ID</label>
-        <input type='text' id='clientID' /><br />
-        Server: <input type='text' id='server' /><br />
-        Username: <input type='text' id='username' /><br />
-        Password: <input type='text' id='password' /><br />
-        <input type='button' id='setMqtt' value='Save MQTT' class='pure-button pure-button-primary' onclick='saveMQTT();' />
-    </fieldset>
+<!doctype html>
+<html lang="en">
+    <head>
+    <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <h3>Range Set</h3>
-    <h4>CW</h4>
-    <fieldset>
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(0.5);' value='1/2 Turn' />
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(0.1250);' value='1/8 Turn' />
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(0.0625);' value='1/16 Turn' />
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(0.015625);'value='1/64 Turn' />
-    </fieldset>
-    <h4>CCW</h4>
-    <fieldset>
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(-0.5);' value='1/2 Turn' />
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(-0.1250);' value='1/8 Turn' />
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(-0.0625);' value='1/16 Turn' />
-        <input type='button' class='pure-button pure-button-primary' onclick='turn(-0.015625);' value='1/64 Turn' />
-    </fieldset>
-    <br /><br />
-    <button class='pure-button pure-button-primary' onclick='limit(0);'>Set 0%</button>
-    <button class='pure-button pure-button-primary' onclick='limit(100);'>Set 100%</button>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="blinds.css">
 
-    <br /><br />
-    <button class='pure-button pure-button-primary' onclick='goto(0);'>Go To 0%</button>
-    <button class='pure-button pure-button-primary' onclick='goto(100);'>Go To 100%</button>
+        <title>Hello, world!</title>
+    </head>
+    <body>
+        <div class="loader-wrapper"><div class="loader"></div></div>
 
-    <h4>Speed Set</h4>
-    <input type='number' id='rangeNumber' min='1' max='100' value='100'  onchange='goto(this.value);'/>
-    <input type='range' id='speedRange' style='width:90%;' min='1' max='100' value='100'  onchange='setSpeed(this.value);'/>
-</div>
-<script type='text/javascript'>
-    function makeRequest(url, params) {
-        alert('Startin Request');
-        url = "/" + url;
-        var http = new XMLHttpRequest();
-        var encodedParams = '';
-        for (var key in params) {
-            encodedParams += key+'='+ params[key]+'&';
-        }
-        alert('Posting to: ' + url + ' with params: ' +encodedParams );
-        encodedParams = encodedParams.slice(0, -1)
-        http.open('POST', url, true);
-        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4 && http.status == 200) {
-                alert(http.responseText);
-            }
-        }
-        http.send(encodedParams);
-        alert(http.responseText);
-    }
+        <div class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal">Blind Rotator!</h1>
+            
+            <div class="btn-group btn-group-lg" role="group">
+                        <button type="button" class="btn btn-success js-go-to" data-value="100">Open</button>
+                </div>
+            <div class="btn-group btn-group-lg" role="group">
+                        <button type="button" class="btn btn-success js-go-to" data-value="0">Close</button>
+                </div>
+        <br />
+        <br />
+            <button class="btn btn-lg btn-primary btn-block show-config">Toggle Configurator</button>
+            <div class="configurator">
+                <h5>Clockwise Turn</h3>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary js-rotate" data-value="0.0625">1/16</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary js-rotate" data-value="0.125">1/8</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary js-rotate" data-value="0.25">1/4</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary js-rotate" data-value="0.5">1/2</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary js-rotate" data-value="1">1/1</button>
+                    </div>
+                    <br />
+                    <br />
+                    <h5>Counter Clockwise Turn</h3>
+                <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary js-rotate" data-value="-0.0625">1/16</button>
+                </div>
+                <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary js-rotate" data-value="-0.125">1/8</button>
+                </div>
+                <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary js-rotate" data-value="-0.25">1/4</button>
+                </div>
+                <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary js-rotate" data-value="-0.5">1/2</button>
+                </div>
+                <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary js-rotate" data-value="-1">1/1</button>
+                </div>
 
-    function saveMQTT() {
-        var params = {
-            'clientID' : document.getElementById('clientID').value,
-            'server' : document.getElementById('server').value,
-            'username': document.getElementById('username').value,
-            'password': document.getElementById('password').value,
-        };
-        makeRequest('mqtt', params);
-    }
+                    <br />
+                    <br />
 
-    function turn(amount) {
-        makeRequest('turn', {'amount' : amount});
-    }
+                    <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-warning js-set-percentage" data-value="0">Set To 0%</button>
+                    </div>
+                    <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-warning js-set-percentage" data-value="100">Set To 100%</button>
+                    </div>
+                    <!-- todo add a speed config in here -->
+            </div>
+        </div>
+        <script src="jquery.min.js"></script>
+        <script src="bootstrap.min.js"></script>
+        <script src="blinds.js"></script>
 
-    function limit(amount) {
-        makeRequest('limit', {'amount' : amount});
-    }
+<!-- 
+        <div class="pieContainer">
+                <div class="pieBackground"></div>
+                <div id="pieSlice1" class="hold"><div class="pie"></div></div>
+                <div id="pieSlice2" class="hold"><div class="pie"></div></div>
+                <div id="pieSlice3" class="hold"><div class="pie"></div></div>
+                <div id="pieSlice4" class="hold"><div class="pie"></div></div>
+            
+              </div> -->
 
-    function setSpeed(amount) {
-        document.getElementById('rangeNumber').value=amount;
-        document.getElementById('speedRange').value=amount;
-        makeRequest('speed', {'amount' : amount});
-    }
-
-    function goto(place) {
-        makeRequest('goto', {'place' : place});
-    }
-</script>
+    </body>
+</html>
