@@ -10,7 +10,7 @@ void EEPROMBlank() {
     SavedObject cleanData = {
             1, /*initialised*/
             255, /*speed*/
-            0,/*currentPosition*/
+            0,/*startPosition*/
             0,/*lowerLimit*/
             0,/*upperLimit*/
     };
@@ -29,7 +29,7 @@ SavedObject setupEEPROM() {
     }
     Serial.println( loadedData.initialised );
     Serial.println( loadedData.speed );
-    Serial.println( loadedData.currentPosition );
+    Serial.println( loadedData.startPosition );
     Serial.println( loadedData.lowerLimit );
     Serial.println( loadedData.upperLimit );
 
@@ -47,8 +47,8 @@ void saveSetting(String setting, String stringValue) {
         loadedData.lowerLimit = stringValue.toInt();
     }else if(setting ==  "speed") {
         loadedData.speed = stringValue.toInt();
-    } else if(setting ==  "currentPosition") {
-        loadedData.currentPosition = stringValue.toInt();
+    } else if(setting ==  "startPosition") {
+        loadedData.startPosition = stringValue.toInt();
     }
     EEPROM.put(dataAddress, loadedData);
     EEPROM.commit();
@@ -59,8 +59,8 @@ long getPositionInfo(String type) {
         return loadedData.upperLimit;
     } else if(type == "lowerLimit") {
         return loadedData.lowerLimit;
-    } else if(type ==  "currentPosition") {
-        return loadedData.currentPosition;
+    } else if(type ==  "startPosition") {
+        return loadedData.startPosition;
     }
 }
 

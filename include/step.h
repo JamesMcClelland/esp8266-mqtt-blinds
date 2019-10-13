@@ -15,3 +15,5 @@ void stepByNumber(long number);
 void stepToPercentage(int percentage);
 
 int getPositionAsPercentage();
+
+void goToPosition(int position);

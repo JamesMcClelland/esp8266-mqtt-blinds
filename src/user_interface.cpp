@@ -55,9 +55,9 @@ void limitSet() {
             int amount = server.arg(i).toInt();
             String stringAmount = String(amount);            
             if (amount == 0) {
-                saveSetting("lowerLimit", stringAmount);
+                saveSetting("lowerLimit", String(getPositionInfo("startPosition")));
             } else if(amount == 100) {
-                saveSetting("upperLimit", stringAmount);
+                saveSetting("upperLimit", String(getPositionInfo("startPosition")));
             }
             break;
         }

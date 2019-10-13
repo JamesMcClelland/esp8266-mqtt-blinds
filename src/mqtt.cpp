@@ -10,7 +10,8 @@ PubSubClient client(espClient);
 
 void sendState() {
    char percentageString[3];
-   int percentPosition = getPositionAsPercentage();
+//    int percentPosition = getPositionAsPercentage();
+    int percentPosition = 0;
    itoa(percentPosition, percentageString, 10);
    client.publish(mqttStateTopic, percentageString, true);
 }
@@ -28,7 +29,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     }
     Serial.println("CB2");
     Serial.println(atoi(message));
-    stepToPercentage(atoi(message));
+    // stepToPercentage(atoi(message));
     Serial.println("CB3");
     sendState();
 }

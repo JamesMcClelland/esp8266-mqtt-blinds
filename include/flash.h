@@ -2,7 +2,7 @@
 struct SavedObject {	
     int initialised;	
     int speed;
-    long currentPosition;	
+    long startPosition;	
     long lowerLimit;
     long upperLimit;
 };	

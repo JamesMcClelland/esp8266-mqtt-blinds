@@ -18,6 +18,7 @@ void setup() {
     setupMotor();
     setupRoutes();
     setupWifi();
+    Serial.println("Why hello there neighbour");
 }
 
 void loop() {	
@@ -25,5 +26,11 @@ void loop() {
     // checkMQTT();
     //Check if below is needed 
     // client.setCallback(callback);	
+
+    // turnAmount(1000);
+    // delay(1000);
+    // turnAmount(-1000);
+    // delay(1000);
+
     handleHTTP();
 }
